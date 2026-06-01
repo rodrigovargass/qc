@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>QConcursos – Sua Aprovação Começa Aqui</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN SYSTEM — QCONCURSOS PROTOTYPE
+═══════════════════════════════════════════ */
+:root {
+  --white:    #fdfdfd;
+  --black:    #1e1a16;
+  --orange:   #fe6313;
+  --green:    #27b84d;
+  --gray:     #959391;
+  --dark-bg:  #0f0d0b;
+  --dark-card:#1a1714;
+  --dark-border: rgba(255,255,255,0.08);
+  --font: 'Inter', sans-serif;
+  --radius: 12px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: var(--font);
+  background: var(--dark-bg);
+  color: var(--white);
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ SCREEN SYSTEM ═══ */
+.screen {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--dark-bg);
+  display: none;
+  -webkit-overflow-scrolling: touch;
+}
+.screen.active { display: block; }
+
+/* ═══ PROGRESS BAR (quiz screens) ═══ */
+.quiz-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--dark-bg);
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--dark-border);
+}
+.quiz-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.quiz-label { color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.quiz-warning { color: #f59e0b; font-size: 11px; display: flex; align-items: center; gap: 4px; }
+.progress-track {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.progress-pct { color: var(--white); font-size: 11px; font-weight: 600; }
+
+/* ═══ SCREEN CONTENT ═══ */
+.screen-content {
+  padding: 24px 20px 40px;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* ═══ HERO SCREEN ═══ */
+.hero-bg {
+  background: radial-gradient(ellipse at top, #1a1008 0%, var(--dark-bg) 70%);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 20px 0;
+  max-width: 430px;
+  margin: 0 auto;
+}
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--orange);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-text { font-size: 16px; font-weight: 800; color: var(--white); letter-spacing: -0.3px; }
+.logo-text span { color: var(--orange); }
+
+/* ═══ TYPOGRAPHY ═══ */
+.headline-xl {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+.headline-lg {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+.headline-md {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.text-orange { color: var(--orange); }
+.text-green  { color: var(--green); }
+.text-gray   { color: var(--gray); }
+.text-sm { font-size: 13px; line-height: 1.5; }
+.text-xs { font-size: 11px; line-height: 1.4; }
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--green);
+  color: var(--black);
+  box-shadow: 0 4px 20px rgba(39,184,77,0.35);
+}
+.btn-primary:hover { box-shadow: 0 6px 28px rgba(39,184,77,0.45); }
+.btn-orange {
+  background: var(--orange);
+  color: var(--white);
+  box-shadow: 0 4px 20px rgba(254,99,19,0.35);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--gray);
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 12px 24px;
+}
+
+/* ═══ OPTION BUTTONS (quiz) ═══ */
+.option-list { display: flex; flex-direction: column; gap: 10px; }
+.option-btn {
+  width: 100%;
+  padding: 18px 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.option-btn:hover { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.07); }
+.option-btn.selected {
+  background: rgba(39,184,77,0.12);
+  border-color: var(--green);
+  color: var(--green);
+}
+.option-btn.selected::before { content: '✓  '; }
+
+/* ═══ CARDS ═══ */
+.card {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+.card-alert {
+  background: rgba(254,99,19,0.06);
+  border: 1px solid rgba(254,99,19,0.2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.card-alert-icon { color: var(--orange); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.card-alert-title { color: var(--orange); font-size: 12px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.card-alert-text { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.5; }
+
+.card-success {
+  background: rgba(39,184,77,0.06);
+  border: 1px solid rgba(39,184,77,0.2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* ═══ INPUT ═══ */
+.input-field {
+  width: 100%;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input-field:focus { border-color: var(--orange); }
+.input-field::placeholder { color: rgba(255,255,255,0.3); }
+
+/* ═══ SPACING HELPERS ═══ */
+.mt-4  { margin-top: 4px; }
+.mt-8  { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mt-40 { margin-top: 40px; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+
+/* ═══ STAT BOXES ═══ */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.stat-box {
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+}
+.stat-box-bad  { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); }
+.stat-box-good { background: rgba(39,184,77,0.12); border: 1px solid rgba(39,184,77,0.25); }
+.stat-num-bad  { font-size: 36px; font-weight: 900; color: #ef4444; letter-spacing: -1px; }
+.stat-num-good { font-size: 36px; font-weight: 900; color: var(--green); letter-spacing: -1px; }
+.stat-label    { font-size: 11px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* ═══ DIVIDER ═══ */
+.divider { height: 1px; background: var(--dark-border); margin: 20px 0; }
+
+/* ═══ BADGE ═══ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge-orange { background: rgba(254,99,19,0.15); color: var(--orange); border: 1px solid rgba(254,99,19,0.3); }
+.badge-green  { background: rgba(39,184,77,0.15); color: var(--green); border: 1px solid rgba(39,184,77,0.3); }
+.badge-red    { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+/* ═══ CHECK LIST ═══ */
+.check-list { display: flex; flex-direction: column; gap: 12px; }
+.check-item { display: flex; align-items: flex-start; gap: 12px; }
+.check-icon { width: 20px; height: 20px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.check-icon svg { width: 10px; height: 10px; }
+.check-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+
+/* ═══ NUMBERED FEATURE LIST ═══ */
+.feature-list { display: flex; flex-direction: column; gap: 8px; }
+.feature-item {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.feature-num {
+  width: 28px; height: 28px;
+  background: rgba(254,99,19,0.15);
+  border: 1px solid rgba(254,99,19,0.3);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: var(--orange);
+  flex-shrink: 0;
+}
+.feature-content {}
+.feature-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+.feature-desc { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+/* ═══ TIMER ═══ */
+.timer-display {
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--green);
+  letter-spacing: -2px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.timer-label { font-size: 12px; color: var(--gray); text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ═══ PRICE BLOCK ═══ */
+.price-block { text-align: center; padding: 20px 0; }
+.price-old { font-size: 14px; color: var(--gray); text-decoration: line-through; margin-bottom: 4px; }
+.price-main { display: flex; align-items: flex-start; justify-content: center; gap: 4px; }
+.price-rs { font-size: 20px; font-weight: 700; color: var(--white); padding-top: 6px; }
+.price-num { font-size: 64px; font-weight: 900; color: var(--white); letter-spacing: -3px; line-height: 1; }
+.price-cents { font-size: 24px; font-weight: 700; color: var(--white); align-self: flex-end; padding-bottom: 6px; }
+.price-installment { font-size: 13px; color: var(--gray); margin-top: 8px; }
+.price-discount {
+  display: inline-block;
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 99px;
+  margin-top: 10px;
+}
+
+/* ═══ TESTIMONIAL CARD ═══ */
+.testimonial-card {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+.testimonial-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.testimonial-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), #ff8c42);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.testimonial-name { font-size: 14px; font-weight: 700; }
+.testimonial-handle { font-size: 12px; color: var(--gray); }
+.testimonial-text { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+.verified-badge { color: #3b82f6; font-size: 14px; margin-left: 4px; }
+
+/* ═══ SOCIAL PROOF BAR ═══ */
+.social-bar {
+  background: rgba(39,184,77,0.08);
+  border: 1px solid rgba(39,184,77,0.2);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  text-align: center;
+}
+.social-bar-num { font-size: 22px; font-weight: 900; color: var(--green); }
+.social-bar-text { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+/* ═══ FAKE WHATSAPP ═══ */
+.wa-header {
+  background: #1a2f1a;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.wa-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.wa-group-name { font-size: 14px; font-weight: 700; }
+.wa-members { font-size: 11px; color: rgba(255,255,255,0.5); }
+.wa-feed { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.wa-msg { display: flex; gap: 8px; }
+.wa-msg-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.wa-bubble {
+  background: var(--dark-card);
+  border-radius: 0 12px 12px 12px;
+  padding: 10px 12px;
+  max-width: 85%;
+}
+.wa-bubble-own {
+  background: #0b4f1a;
+  border-radius: 12px 0 12px 12px;
+  margin-left: auto;
+}
+.wa-bubble-own-wrap { justify-content: flex-end; }
+.wa-sender { font-size: 12px; font-weight: 700; color: var(--green); margin-bottom: 3px; }
+.wa-text { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+/* ═══ CALL SCREEN ═══ */
+.call-screen-bg {
+  background: #1c1c1e;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ═══ LOADING / PROCESSING ═══ */
+.loading-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid rgba(39,184,77,0.2);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══ CRITICAL RESULT ═══ */
+.critical-icon {
+  width: 64px; height: 64px;
+  border: 2px solid #ef4444;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto;
+  animation: pulse-red 2s infinite;
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(239,68,68,0); }
+}
+
+/* ═══ BIG PERCENTAGE ═══ */
+.big-pct {
+  font-size: 80px;
+  font-weight: 900;
+  letter-spacing: -4px;
+  line-height: 1;
+}
+.big-pct-red { color: #ef4444; }
+
+/* ═══ STICKY CTA BAR ═══ */
+.sticky-cta {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, var(--dark-bg) 80%, transparent);
+  padding: 16px 20px 28px;
+  z-index: 50;
+}
+
+/* ═══ HERO STATS ROW ═══ */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0;
+}
+.hero-stat {
+  text-align: center;
+  padding: 14px 8px;
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+}
+.hero-stat-num { font-size: 20px; font-weight: 900; color: var(--orange); letter-spacing: -0.5px; }
+.hero-stat-label { font-size: 10px; color: var(--gray); margin-top: 2px; line-height: 1.3; }
+
+/* ═══ VIDEO PLACEHOLDER ═══ */
+.video-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #1a1008, #2a1a08);
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(254,99,19,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.play-btn {
+  width: 52px; height: 52px;
+  background: rgba(254,99,19,0.9);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  z-index: 2;
+}
+.play-btn:hover { transform: scale(1.1); background: var(--orange); }
+.play-btn svg { width: 22px; height: 22px; fill: white; margin-left: 3px; }
+.video-label {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ═══ METRIC HIGHLIGHT ═══ */
+.metric-highlight {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  margin: 8px 0;
+}
+.metric-val { font-size: 48px; font-weight: 900; color: #ef4444; letter-spacing: -2px; line-height: 1; }
+.metric-desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+/* ═══ PROCESSING BAR ═══ */
+.processing-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--dark-bg);
+  padding: 14px 20px 12px;
+}
+.processing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.processing-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.processing-pct { font-size: 12px; font-weight: 700; color: var(--green); }
+.processing-warning { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #f59e0b; margin-top: 6px; }
+
+/* ═══ PLAN CARD ═══ */
+.plan-card {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card.featured {
+  border-color: var(--orange);
+  background: linear-gradient(135deg, rgba(254,99,19,0.05), var(--dark-card));
+}
+.plan-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: var(--orange);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.plan-name { font-size: 11px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.plan-price-val { font-size: 36px; font-weight: 900; color: var(--white); letter-spacing: -1px; }
+.plan-price-period { font-size: 13px; color: var(--gray); }
+.plan-features { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.plan-features li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.8); }
+.plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+/* ═══ FADE IN ANIMATION ═══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.4s ease forwards; }
+.fade-up-1 { animation: fadeUp 0.4s 0.05s ease both; }
+.fade-up-2 { animation: fadeUp 0.4s 0.1s ease both; }
+.fade-up-3 { animation: fadeUp 0.4s 0.15s ease both; }
+.fade-up-4 { animation: fadeUp 0.4s 0.2s ease both; }
+.fade-up-5 { animation: fadeUp 0.4s 0.25s ease both; }
+
+/* ═══ WHATSAPP INPUT BAR ═══ */
+.wa-input-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--dark-bg);
+  padding: 12px 16px 28px;
+  border-top: 1px solid var(--dark-border);
+}
+
+/* ═══ APPROVAL MODAL / RESULT SCREEN ═══ */
+.approval-box {
+  background: rgba(39,184,77,0.06);
+  border: 1px solid rgba(39,184,77,0.3);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+}
+.approval-icon { font-size: 32px; margin-bottom: 8px; }
+.approval-title { font-size: 16px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
+
+/* ═══ SCROLL INDICATOR ═══ */
+.scroll-hint {
+  text-align: center;
+  padding: 8px 0;
+  color: var(--gray);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ═══ MOBILE ADJUSTMENTS ═══ */
+@media (min-width: 430px) {
+  .screen { display: none !important; }
+  .screen.active {
+    display: flex !important;
+    justify-content: center;
+    background: #0a0806;
+  }
+  .screen.active > * {
+    width: 390px;
+    max-width: 390px;
+    min-height: 100vh;
+    background: var(--dark-bg);
+    position: relative;
+  }
+  .screen-inner {
+    width: 390px;
+    max-width: 390px;
+    min-height: 100vh;
+    background: var(--dark-bg);
+    overflow-y: auto;
+    position: relative;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  TELA 01 — HERO / ENTRADA
+═══════════════════════════════════════ -->
+<section id="screen-1" class="screen active hero-bg">
+  <div class="screen-inner">
+    <!-- Logo -->
+    <div class="logo-wrap fade-up-1">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2L12.4 7.4L18 8.1L14 12L15.1 18L10 15.2L4.9 18L6 12L2 8.1L7.6 7.4L10 2Z" fill="white"/>
+        </svg>
+      </div>
+      <div class="logo-text">Q<span>Concursos</span></div>
+    </div>
+
+    <div class="screen-content" style="padding-top:16px;">
+      <!-- Social proof pill -->
+      <div style="margin-bottom:20px;" class="fade-up-1">
+        <div class="social-bar">
+          <div class="social-bar-num">+2 milhões</div>
+          <div class="social-bar-text">de concurseiros já passaram com o QConcursos</div>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <div class="fade-up-2">
+        <p style="font-size:13px; color:var(--orange); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;">
+          🎯 Para quem quer ser aprovado
+        </p>
+        <h1 class="headline-xl" style="margin-bottom:12px;">
+          Estude <span class="text-orange">menos horas</span> e passe <span class="text-green">mais rápido</span> no concurso
+        </h1>
+        <p style="font-size:15px; color:rgba(255,255,255,0.65); line-height:1.6; margin-bottom:20px;">
+          A plataforma de questões comentadas que já colocou milhares de candidatos na nomeação — com método, trilhas e IA.
+        </p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="hero-stats fade-up-3" style="margin-bottom:20px;">
+        <div class="hero-stat">
+          <div class="hero-stat-num">8M+</div>
+          <div class="hero-stat-label">Questões comentadas</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">95%</div>
+          <div class="hero-stat-label">Taxa de retenção</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">3x</div>
+          <div class="hero-stat-label">Mais rápido pra aprovar</div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="fade-up-4" style="margin-bottom:16px;">
+        <p style="font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:10px;">👇 Qual concurso você quer passar?</p>
+        <input type="text" class="input-field" id="concurso-input" placeholder="Ex: PRF, TJ, Polícia Federal...">
+      </div>
+
+      <!-- CTA Primary -->
+      <div class="fade-up-5" style="margin-bottom:10px;">
+        <button class="btn btn-primary" onclick="goTo(2)">
+          🚀 QUERO MINHA APROVAÇÃO
+        </button>
+      </div>
+      <div class="fade-up-5">
+        <button class="btn btn-ghost" onclick="goTo(2)">Ver como funciona →</button>
+      </div>
+
+      <!-- Trust signals -->
+      <div style="margin-top:24px; display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;" class="fade-up-5">
+        <span style="font-size:11px; color:var(--gray); display:flex;align-items:center;gap:4px;">🔒 Pagamento seguro</span>
+        <span style="font-size:11px; color:var(--gray); display:flex;align-items:center;gap:4px;">✅ Cancele quando quiser</span>
+        <span style="font-size:11px; color:var(--gray); display:flex;align-items:center;gap:4px;">🏆 +15 anos no mercado</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 02 — PERGUNTA BINÁRIA 1: Quer passar?
+═══════════════════════════════════════ -->
+<section id="screen-2" class="screen">
+  <div class="screen-inner" style="display:flex; flex-direction:column; justify-content:center; min-height:100vh; padding:40px 24px;">
+    <div class="fade-up">
+      <p style="font-size:14px; color:var(--gray); text-align:center; margin-bottom:32px;">
+        Só uma pergunta rápida 👇
+      </p>
+      <h2 class="headline-lg" style="text-align:center; margin-bottom:8px;">
+        Você quer ser <span class="text-orange">aprovado</span> no concurso? 🏆
+      </h2>
+      <p style="font-size:13px; color:var(--gray); text-align:center; margin-bottom:36px;">
+        (Seja honesto — isso vai personalizar sua jornada)
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <button class="btn btn-primary" onclick="goTo(3)">
+          ✅ SIM — Quero minha aprovação
+        </button>
+        <button class="btn btn-secondary" onclick="goTo(3)">
+          NÃO — Só estou curioso
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 03 — PERGUNTA BINÁRIA 2: Com método ou improviso?
+═══════════════════════════════════════ -->
+<section id="screen-3" class="screen">
+  <div class="screen-inner" style="display:flex; flex-direction:column; justify-content:center; min-height:100vh; padding:40px 24px;">
+    <div class="fade-up">
+      <h2 class="headline-lg" style="text-align:center; margin-bottom:8px;">
+        Prefere estudar <span class="text-green">COM método</span> ou no improviso? 📋
+      </h2>
+      <p style="font-size:13px; color:var(--gray); text-align:center; margin-bottom:36px;">
+        Candidatos com método passam 3x mais rápido
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <button class="btn btn-primary" onclick="goTo(4)">
+          📋 COM MÉTODO
+        </button>
+        <button class="btn btn-secondary" onclick="goTo(4)">
+          NO IMPROVISO
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 04 — PERGUNTA BINÁRIA 3: Rápido ou demorar?
+═══════════════════════════════════════ -->
+<section id="screen-4" class="screen">
+  <div class="screen-inner" style="display:flex; flex-direction:column; justify-content:center; min-height:100vh; padding:40px 24px;">
+    <div class="fade-up">
+      <h2 class="headline-lg" style="text-align:center; margin-bottom:8px;">
+        Quer passar <span class="text-orange">RÁPIDO</span> ou demorar anos? ⏱️
+      </h2>
+      <p style="font-size:13px; color:var(--gray); text-align:center; margin-bottom:36px;">
+        A escolha de hoje define quanto tempo você vai levar
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <button class="btn btn-primary" onclick="goTo(5)">
+          ⚡ RÁPIDO
+        </button>
+        <button class="btn btn-secondary" onclick="goTo(5)">
+          DEMORAR
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 05 — DIAGNÓSTICO INTRO
+═══════════════════════════════════════ -->
+<section id="screen-5" class="screen">
+  <div class="screen-inner">
+    <div class="screen-content">
+      <div class="fade-up-1" style="text-align:center; margin-bottom:28px;">
+        <div style="font-size:40px; margin-bottom:12px;">🔬</div>
+        <h2 class="headline-lg" style="margin-bottom:8px;">Diagnóstico <span class="text-orange">QConcursos</span></h2>
+        <p style="font-size:14px; color:var(--gray);">Antes de começar, você precisa saber disso:</p>
+      </div>
+
+      <!-- Stat split -->
+      <div class="stat-grid fade-up-2" style="margin-bottom:20px;">
+        <div class="stat-box stat-box-bad">
+          <div class="stat-num-bad">83%</div>
+          <div class="stat-label">Estudam ERRADO</div>
+        </div>
+        <div class="stat-box stat-box-good">
+          <div class="stat-num-good">17%</div>
+          <div class="stat-label">Usam MÉTODO</div>
+        </div>
+      </div>
+
+      <!-- Explanation card -->
+      <div class="card fade-up-3" style="margin-bottom:20px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <p style="font-size:14px; color:rgba(255,255,255,0.85); line-height:1.6;">
+            → <strong>83% dos concurseiros</strong> estudam sem método científico. Não por preguiça, mas por não saber o caminho certo.
+          </p>
+          <p style="font-size:14px; color:rgba(255,255,255,0.85); line-height:1.6;">
+            → <strong class="text-green">Apenas 17%</strong> aplicam trilhas e questões estratégicas. Eles estudam <strong>MENOS horas</strong> e passam.
+          </p>
+          <p style="font-size:14px; color:var(--orange); font-weight:600; line-height:1.6;">
+            → Este diagnóstico vai revelar em qual grupo VOCÊ está.
+          </p>
+        </div>
+      </div>
+
+      <div class="fade-up-4">
+        <button class="btn btn-primary" onclick="goTo(6)">
+          🔍 INICIAR DIAGNÓSTICO →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 06 — QUIZ Q1: Tempo de estudo
+═══════════════════════════════════════ -->
+<section id="screen-6" class="screen">
+  <div class="screen-inner">
+    <div class="quiz-header">
+      <div class="quiz-header-row">
+        <div>
+          <div class="quiz-label">⚡ Diagnóstico QConcursos</div>
+        </div>
+        <span class="quiz-warning">⚠️ Não feche</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="progress-track" style="flex:1;">
+          <div class="progress-fill" style="width:33%;"></div>
+        </div>
+        <span class="progress-pct">33%</span>
+      </div>
+      <div style="margin-top:6px; font-size:11px; color:var(--gray);">Pergunta 1 de 3</div>
+    </div>
+
+    <div class="screen-content" style="padding-top:24px;">
+      <h2 class="headline-md fade-up-1" style="margin-bottom:24px;">
+        Quanto tempo você estuda por dia, em média?
+      </h2>
+
+      <div class="option-list fade-up-2" id="q1-options">
+        <button class="option-btn" onclick="selectOption(this, 'q1', 'menos2h', 7)">Menos de 2h</button>
+        <button class="option-btn" onclick="selectOption(this, 'q1', '2a4h', 7)">2 a 4h</button>
+        <button class="option-btn" onclick="selectOption(this, 'q1', '4a6h', 7)">4 a 6h</button>
+        <button class="option-btn" onclick="selectOption(this, 'q1', 'mais6h', 7)">Mais de 6h</button>
+      </div>
+
+      <!-- Dynamic feedback card -->
+      <div id="q1-feedback" style="display:none; margin-top:16px;" class="card-alert">
+        <div class="card-alert-icon">⚠️</div>
+        <div>
+          <div class="card-alert-title" id="q1-feedback-title"></div>
+          <div class="card-alert-text" id="q1-feedback-text"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary" id="q1-btn" onclick="goTo(7)" style="opacity:0.4; pointer-events:none;" disabled>
+          CONTINUAR →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 07 — QUIZ Q2: Como organiza estudos
+═══════════════════════════════════════ -->
+<section id="screen-7" class="screen">
+  <div class="screen-inner">
+    <div class="quiz-header">
+      <div class="quiz-header-row">
+        <div class="quiz-label">⚡ Diagnóstico QConcursos</div>
+        <span class="quiz-warning">⚠️ Não feche</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="progress-track" style="flex:1;">
+          <div class="progress-fill" style="width:67%;"></div>
+        </div>
+        <span class="progress-pct">67%</span>
+      </div>
+      <div style="margin-top:6px; font-size:11px; color:var(--gray);">Pergunta 2 de 3</div>
+    </div>
+
+    <div class="screen-content" style="padding-top:24px;">
+      <h2 class="headline-md fade-up-1" style="margin-bottom:24px;">
+        Como você organiza seus estudos atualmente?
+      </h2>
+
+      <div class="option-list fade-up-2" id="q2-options">
+        <button class="option-btn" onclick="selectOption(this, 'q2', 'sem', 8)">Sem organização</button>
+        <button class="option-btn" onclick="selectOption(this, 'q2', 'basico', 8)">Cronograma básico</button>
+        <button class="option-btn" onclick="selectOption(this, 'q2', 'internet', 8)">Cronogramas da internet</button>
+        <button class="option-btn" onclick="selectOption(this, 'q2', 'estruturado', 8)">Trilha estruturada por edital</button>
+      </div>
+
+      <div id="q2-feedback" style="display:none; margin-top:16px;" class="card-alert">
+        <div class="card-alert-icon">⚠️</div>
+        <div>
+          <div class="card-alert-title" id="q2-feedback-title"></div>
+          <div class="card-alert-text" id="q2-feedback-text"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary" id="q2-btn" onclick="goTo(8)" style="opacity:0.4; pointer-events:none;" disabled>
+          CONTINUAR →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 08 — QUIZ Q3: Quantos concursos prestou
+═══════════════════════════════════════ -->
+<section id="screen-8" class="screen">
+  <div class="screen-inner">
+    <div class="quiz-header">
+      <div class="quiz-header-row">
+        <div class="quiz-label">⚡ Diagnóstico QConcursos</div>
+        <span class="quiz-warning">⚠️ Não feche</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="progress-track" style="flex:1;">
+          <div class="progress-fill" style="width:100%;"></div>
+        </div>
+        <span class="progress-pct">100%</span>
+      </div>
+      <div style="margin-top:6px; font-size:11px; color:var(--gray);">Pergunta 3 de 3</div>
+    </div>
+
+    <div class="screen-content" style="padding-top:24px;">
+      <h2 class="headline-md fade-up-1" style="margin-bottom:24px;">
+        Quantos concursos você já prestou?
+      </h2>
+
+      <div class="option-list fade-up-2" id="q3-options">
+        <button class="option-btn" onclick="selectOption(this, 'q3', 'nenhum', 9)">Nenhum — é meu primeiro</button>
+        <button class="option-btn" onclick="selectOption(this, 'q3', '1a3', 9)">1 a 3</button>
+        <button class="option-btn" onclick="selectOption(this, 'q3', '4a7', 9)">4 a 7</button>
+        <button class="option-btn" onclick="selectOption(this, 'q3', 'mais7', 9)">Mais de 7</button>
+      </div>
+
+      <div id="q3-feedback" style="display:none; margin-top:16px;" class="card-success">
+        <div style="color:var(--green); font-size:16px; flex-shrink:0; margin-top:1px;">💡</div>
+        <div>
+          <div style="color:var(--green); font-size:12px; font-weight:700; margin-bottom:4px; text-transform:uppercase;">Momento Crucial</div>
+          <div style="color:rgba(255,255,255,0.7); font-size:13px; line-height:1.5;" id="q3-feedback-text"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-primary" id="q3-btn" onclick="goTo(9)" style="opacity:0.4; pointer-events:none;" disabled>
+          CONTINUAR →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 09 — PROCESSANDO (com vídeo social proof)
+═══════════════════════════════════════ -->
+<section id="screen-9" class="screen">
+  <div class="screen-inner">
+    <div class="processing-header">
+      <div class="processing-row">
+        <span class="processing-label" style="color:var(--green);">⟳ Analisando seu perfil...</span>
+        <span class="processing-pct" id="proc-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="proc-bar" style="width:0%;"></div>
+      </div>
+      <div class="processing-warning">⚠️ Não feche essa tela</div>
+    </div>
+
+    <div class="screen-content" style="padding-top:20px;">
+      <!-- Análise em progresso -->
+      <div class="card fade-up-1" style="margin-bottom:20px;">
+        <div style="display:flex; flex-direction:column; gap:12px;" id="analysis-items">
+          <div class="check-item" style="opacity:0.3;" id="ai1">
+            <div class="check-icon" style="background:rgba(255,255,255,0.1);">
+              <svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <span class="check-text">Comparando com padrão de aprovados</span>
+          </div>
+          <div class="check-item" style="opacity:0.3;" id="ai2">
+            <div class="check-icon" style="background:rgba(255,255,255,0.1);">
+              <svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <span class="check-text">Analisando organização vs. candidatos aprovados</span>
+          </div>
+          <div class="check-item" style="opacity:0.3;" id="ai3">
+            <div class="check-icon" style="background:rgba(255,255,255,0.1);">
+              <svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <span class="check-text">Calculando risco de reprovação atual</span>
+          </div>
+          <div class="check-item" style="opacity:0.3;" id="ai4">
+            <div class="check-icon" style="background:rgba(255,255,255,0.1);">
+              <svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <span class="check-text">Identificando gaps críticos na preparação</span>
+          </div>
+          <div class="check-item" style="opacity:0.3;" id="ai5">
+            <div class="check-icon" style="background:rgba(255,255,255,0.1);">
+              <svg viewBox="0 0 10 10"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <span class="check-text">Gerando plano personalizado de aprovação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Imagine card -->
+      <div class="card fade-up-2" style="margin-bottom:20px; text-align:center; background:linear-gradient(135deg, rgba(39,184,77,0.05), var(--dark-card));">
+        <div style="font-size:28px; margin-bottom:8px;">📬</div>
+        <p style="font-size:14px; color:var(--orange); font-weight:700; margin-bottom:8px;">Imagina Daqui 8 Meses...</p>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:12px;">Você abre o e-mail do órgão e vê:</p>
+        <div style="background:rgba(39,184,77,0.1); border:1px solid rgba(39,184,77,0.3); border-radius:10px; padding:16px;">
+          <div style="font-size:11px; color:var(--green); font-weight:700; margin-bottom:4px;">✅ RESULTADO FINAL</div>
+          <div style="font-size:18px; font-weight:900; color:var(--white);" id="candidato-nome">CANDIDATO(A) APROVADO(A)</div>
+          <div style="font-size:12px; color:var(--gray); margin-top:4px;">Classificado(a) na lista de nomeação</div>
+        </div>
+        <p style="font-size:12px; color:var(--gray); margin-top:12px; font-style:italic;">Você vai se lembrar desse momento exato.</p>
+      </div>
+
+      <!-- CTA (disabled inicialmente) -->
+      <button class="btn btn-primary" id="ver-diagnostico-btn" onclick="goTo(10)" style="opacity:0.3; pointer-events:none;" disabled>
+        VER MEU DIAGNÓSTICO →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 10 — RESULTADO CRÍTICO
+═══════════════════════════════════════ -->
+<section id="screen-10" class="screen">
+  <div class="screen-inner">
+    <div class="screen-content">
+      <!-- Ícone crítico -->
+      <div style="text-align:center; margin-bottom:20px;" class="fade-up-1">
+        <div class="critical-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 style="font-size:16px; font-weight:900; color:#ef4444; letter-spacing:1px; text-transform:uppercase; margin-top:12px;">
+          ⚠️ Análise Crítica Detectada
+        </h2>
+      </div>
+
+      <!-- Resultado -->
+      <div class="card fade-up-2" style="margin-bottom:16px;">
+        <p style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:12px; text-align:center;">Baseado nas suas 3 respostas:</p>
+        <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:10px; padding:20px; text-align:center; margin-bottom:12px;">
+          <div class="big-pct big-pct-red">75%</div>
+          <div style="font-size:13px; color:rgba(255,255,255,0.6); margin-top:6px;">de alinhamento com perfil de</div>
+          <div style="font-size:14px; font-weight:800; color:#ef4444; margin-top:4px;">REPROVADOS CRÔNICOS</div>
+        </div>
+
+        <!-- Insight box -->
+        <div style="background:rgba(254,99,19,0.06); border:1px solid rgba(254,99,19,0.2); border-radius:10px; padding:14px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span style="font-size:16px;">💡</span>
+            <span style="font-size:12px; font-weight:700; color:var(--orange);">Você Sabia?</span>
+          </div>
+          <p style="font-size:13px; color:rgba(255,255,255,0.75); line-height:1.6;">
+            Ana Beatriz tinha <strong>87% de alinhamento</strong> com esse perfil quando tirou <span style="color:#ef4444; font-weight:700;">23% na prova</span> estudando 4 meses sem método.
+          </p>
+          <p style="font-size:13px; color:rgba(255,255,255,0.75); line-height:1.6; margin-top:6px;">
+            6 meses depois, com trilhas QConcursos: <span style="color:var(--green); font-weight:700;">aprovada em 3º lugar no TRF.</span>
+          </p>
+        </div>
+      </div>
+
+      <p style="font-size:13px; color:rgba(255,255,255,0.5); text-align:center; margin-bottom:16px;" class="fade-up-3">
+        Seu relatório completo está sendo gerado com base nessas respostas.
+      </p>
+
+      <div class="fade-up-4">
+        <button class="btn btn-orange" onclick="goTo(11)">
+          VER MEU RELATÓRIO COMPLETO →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 11 — CAPTURA DE LEAD
+═══════════════════════════════════════ -->
+<section id="screen-11" class="screen">
+  <div class="screen-inner">
+    <div class="processing-header">
+      <div class="processing-row">
+        <span class="processing-label" style="color:var(--green);">✓ Diagnóstico Pronto!</span>
+        <span class="processing-pct">100%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:100%;"></div>
+      </div>
+      <div class="processing-warning">⚠️ Não feche essa tela</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; justify-content:center; padding:24px 20px 40px; max-width:430px; margin:0 auto;">
+      <div style="text-align:center; margin-bottom:28px;" class="fade-up-1">
+        <div style="font-size:32px; margin-bottom:8px;">🔒</div>
+        <h2 class="headline-md" style="margin-bottom:8px;">
+          <span class="text-green">Diagnóstico Pronto!</span>
+        </h2>
+        <p style="font-size:14px; color:rgba(255,255,255,0.6);">Preencha para liberar seu resultado personalizado:</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;" class="fade-up-2">
+        <input type="email" class="input-field" placeholder="Seu melhor e-mail" id="lead-email">
+        <input type="tel" class="input-field" placeholder="WhatsApp (DDD) 99999-9999" id="lead-phone">
+      </div>
+
+      <div class="fade-up-3">
+        <button class="btn btn-orange" onclick="goTo(12)" style="margin-bottom:12px;">
+          🚀 VER MEU DIAGNÓSTICO COMPLETO
+        </button>
+        <p style="font-size:11px; color:var(--gray); text-align:center; line-height:1.5;">
+          🔒 Seus dados estão seguros. Sem spam, prometemos.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 12 — DIAGNÓSTICO COMPLETO / PROBLEMA
+═══════════════════════════════════════ -->
+<section id="screen-12" class="screen">
+  <div class="screen-inner">
+    <div class="screen-content">
+      <!-- Header -->
+      <div class="fade-up-1" style="margin-bottom:20px;">
+        <div style="margin-bottom:8px;">
+          <span class="badge badge-red">🚨 Iniciante Desorganizado</span>
+        </div>
+        <h2 class="headline-md" style="margin-bottom:12px;">Diagnóstico Completo,</h2>
+        <div class="card" style="margin-bottom:0;">
+          <p style="font-size:14px; color:rgba(255,255,255,0.85); line-height:1.7;">
+            Você está no perfil de <span style="color:#ef4444; font-weight:700;">75% dos concurseiros que NUNCA vão passar</span>. Não por falta de inteligência, mas porque está estudando <strong>SEM MÉTODO</strong>.
+          </p>
+          <p style="font-size:14px; color:rgba(255,255,255,0.85); line-height:1.7; margin-top:10px;">
+            Você está <strong>desperdiçando</strong> seu tempo mais valioso: o <span style="color:var(--orange); font-weight:700;">AGORA</span>. Enquanto você estuda "do seu jeito", outros candidatos estão usando trilhas inteligentes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Custo de estudar errado -->
+      <div class="fade-up-2">
+        <p style="font-size:12px; color:var(--gray); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">
+          📊 O Que Está Te Custando Estudar Sem Método
+        </p>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+          <div class="metric-highlight">
+            <div class="metric-val">−600h</div>
+            <div class="metric-desc">Horas perdidas por ano estudando sem foco</div>
+          </div>
+          <div class="metric-highlight" style="background:rgba(254,99,19,0.08); border-color:rgba(254,99,19,0.2);">
+            <div class="metric-val" style="color:var(--orange); font-size:36px;">R$ 18k</div>
+            <div class="metric-desc">Custo de oportunidade (salário perdido)</div>
+          </div>
+          <div class="metric-highlight" style="background:rgba(254,99,19,0.08); border-color:rgba(254,99,19,0.2);">
+            <div class="metric-val" style="color:var(--orange); font-size:28px;">1-3 anos</div>
+            <div class="metric-desc">A mais para aprovar sem método</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enquanto isso -->
+      <div class="card-alert fade-up-3" style="margin-bottom:16px;">
+        <div class="card-alert-icon">⚡</div>
+        <div>
+          <div class="card-alert-title">Enquanto você estuda do jeito errado:</div>
+          <div class="card-alert-text">
+            — Você perde meses que poderia estar recebendo.<br>
+            — Outros candidatos estão avançando nas trilhas e furando SUA fila.<br>
+            — Cada edital que passa é uma janela que FECHA.
+          </div>
+        </div>
+      </div>
+
+      <!-- Conclusão -->
+      <div style="text-align:center; margin-bottom:20px;" class="fade-up-4">
+        <p style="font-size:14px; color:var(--green); font-weight:700; line-height:1.6;">
+          Assinar o QConcursos não é gasto.<br>É <strong>economia de ANOS</strong> de tempo perdido.
+        </p>
+      </div>
+
+      <div class="fade-up-5">
+        <button class="btn btn-primary" onclick="goTo(13)">
+          VER A SOLUÇÃO →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 13 — SOCIAL PROOF (WhatsApp fake)
+═══════════════════════════════════════ -->
+<section id="screen-13" class="screen">
+  <div class="screen-inner">
+    <!-- WA Header -->
+    <div class="wa-header">
+      <div class="wa-avatar">📢</div>
+      <div>
+        <div class="wa-group-name">Aprovados QConcursos 🏆</div>
+        <div class="wa-members">3.847 membros</div>
+      </div>
+    </div>
+
+    <!-- Messages feed -->
+    <div class="wa-feed">
+      <div class="wa-msg fade-up-1">
+        <div class="wa-msg-avatar" style="background:#3b82f6;">MF</div>
+        <div>
+          <div class="wa-bubble">
+            <div class="wa-sender">Marina Ferreira ✓</div>
+            <div class="wa-text">Saiu o resultado do TJ-SP, vocês já viram?? 👀</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-msg fade-up-2">
+        <div class="wa-msg-avatar" style="background:#ef4444;">LC</div>
+        <div>
+          <div class="wa-bubble">
+            <div class="wa-sender">Lucas Cardoso ✓</div>
+            <div class="wa-text">PASSEI!! 🎉🎉 7º lugar!! Estudei 5 meses pelas trilhas do Q</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-msg fade-up-2">
+        <div class="wa-msg-avatar" style="background:#8b5cf6;">RO</div>
+        <div>
+          <div class="wa-bubble">
+            <div class="wa-sender">Renata Oliveira ✓</div>
+            <div class="wa-text">SIIIIM!! Aprovada em 4º!! Não tô acreditando!! 🔥🔥</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-msg fade-up-3">
+        <div class="wa-msg-avatar" style="background:#f59e0b;">PT</div>
+        <div>
+          <div class="wa-bubble">
+            <div class="wa-sender">Pedro Torres ✓</div>
+            <div class="wa-text">Eu não passei... estudei muito mas sem os simulados certos. Fico feliz por vocês! Próximo vou usar o método completo mesmo 💪</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-msg fade-up-4">
+        <div class="wa-msg-avatar" style="background:#ef4444;">LC</div>
+        <div>
+          <div class="wa-bubble">
+            <div class="wa-sender">Lucas Cardoso ✓</div>
+            <div class="wa-text">@Pedro a diferença foi usar as questões comentadas e os simulados do edital. Sem isso eu teria rodado de novo. O Q Concursos foi decisivo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-msg fade-up-4">
+        <div class="wa-msg-avatar" style="background:#3b82f6;">MF</div>
+        <div>
+          <div class="wa-bubble">
+            <div class="wa-sender">Marina Ferreira ✓</div>
+            <div class="wa-text">Exato! Quem não usou a trilha completa sentiu falta. Quem seguiu o método, passou. Simples assim</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagem own -->
+      <div class="wa-msg wa-bubble-own-wrap fade-up-5" style="display:flex; justify-content:flex-end;">
+        <div class="wa-bubble wa-bubble-own">
+          <div class="wa-text">Que método? Alguém me explica como funciona o QConcursos?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA bar -->
+    <div class="wa-input-bar">
+      <button class="btn btn-primary" onclick="goTo(14)">
+        QUERO CONHECER O MÉTODO →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 14 — A SOLUÇÃO / O QUE VOCÊ VAI RECEBER
+═══════════════════════════════════════ -->
+<section id="screen-14" class="screen">
+  <div class="screen-inner">
+    <div class="screen-content">
+      <div class="fade-up-1" style="text-align:center; margin-bottom:8px;">
+        <p style="font-size:13px; color:var(--gray); margin-bottom:4px;">Aqui está o que você vai receber:</p>
+        <h2 class="headline-lg" style="margin-bottom:4px;">
+          O Método <span class="text-orange">Aprovação Garantida</span>
+        </h2>
+        <p style="font-size:12px; color:var(--gray);">QConcursos Premium</p>
+      </div>
+
+      <!-- Feature list -->
+      <div class="feature-list fade-up-2" style="margin-bottom:20px;">
+        <div class="feature-item">
+          <div class="feature-num">01</div>
+          <div class="feature-content">
+            <div class="feature-title">Trilhas de Estudo por Edital</div>
+            <div class="feature-desc">Estude exatamente o que cai na sua prova. Zero desperdício.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">02</div>
+          <div class="feature-content">
+            <div class="feature-title">+8 Milhões de Questões Comentadas</div>
+            <div class="feature-desc">Pratique com questões reais de bancas. Comentários de especialistas.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">03</div>
+          <div class="feature-content">
+            <div class="feature-title">Simulados Cronometrados</div>
+            <div class="feature-desc">Simule o dia da prova e treine seu tempo. Identifique pontos fracos.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">04</div>
+          <div class="feature-content">
+            <div class="feature-title">Revisão Inteligente com IA</div>
+            <div class="feature-desc">O sistema identifica o que você precisa revisar. Estuda menos, fixa mais.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">05</div>
+          <div class="feature-content">
+            <div class="feature-title">Estatísticas de Desempenho</div>
+            <div class="feature-desc">Veja sua evolução em tempo real. Saiba exatamente onde melhorar.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-num">06</div>
+          <div class="feature-content">
+            <div class="feature-title">Cronograma Personalizado</div>
+            <div class="feature-desc">Plano de estudos adaptado ao seu tempo e ao seu edital.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proof quote -->
+      <div class="card-success fade-up-3" style="margin-bottom:16px;">
+        <div style="color:var(--green); font-size:18px; flex-shrink:0;">✅</div>
+        <div>
+          <p style="font-size:13px; color:rgba(255,255,255,0.8); line-height:1.6; font-style:italic;">
+            "Fiz o que o QConcursos indicou. Em 4 meses, passei em <strong>2º lugar entre 2.400 candidatos</strong>. Primeiro concurso da minha vida."
+          </p>
+          <p style="font-size:12px; color:var(--gray); margin-top:6px;">— Ana Clara, PRF 2024</p>
+        </div>
+      </div>
+
+      <!-- Resumo -->
+      <div style="text-align:center; margin-bottom:20px; padding:16px; background:rgba(39,184,77,0.05); border:1px solid rgba(39,184,77,0.1); border-radius:var(--radius);" class="fade-up-4">
+        <p style="font-size:15px; font-weight:700; color:rgba(255,255,255,0.9); line-height:1.6;">
+          <span class="text-orange">O que estudar</span>, <span class="text-green">como aprender</span> e <span class="text-orange">como lembrar</span>.<br>
+          <span style="color:var(--green); font-size:14px;">Isso acelera em até 3x sua aprovação.</span>
+        </p>
+      </div>
+
+      <div class="fade-up-5">
+        <button class="btn btn-primary" onclick="goTo(15)">
+          VER PLANOS E PREÇOS →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 15 — PLANOS E PREÇOS
+═══════════════════════════════════════ -->
+<section id="screen-15" class="screen">
+  <div class="screen-inner">
+    <div class="screen-content">
+      <div class="fade-up-1" style="text-align:center; margin-bottom:24px;">
+        <p style="font-size:13px; color:var(--gray); margin-bottom:6px;">Oferta especial para quem fez o diagnóstico</p>
+        <h2 class="headline-lg" style="margin-bottom:4px;">
+          Escolha seu <span class="text-orange">Plano</span>
+        </h2>
+        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(254,99,19,0.1); border:1px solid rgba(254,99,19,0.2); border-radius:99px; padding:5px 12px; margin-top:8px;">
+          <span style="font-size:11px; color:#f59e0b;">🔥</span>
+          <span style="font-size:11px; color:var(--orange); font-weight:700;">Oferta expira em: <span id="offer-timer">14:59</span></span>
+        </div>
+      </div>
+
+      <!-- Plano Gratuito -->
+      <div class="plan-card fade-up-2" style="margin-bottom:12px;">
+        <div class="plan-name">Plano Grátis</div>
+        <div class="plan-price-val">R$ 0<span class="plan-price-period" style="font-size:20px;">/mês</span></div>
+        <ul class="plan-features" style="margin-top:10px;">
+          <li>10 questões por dia</li>
+          <li>Acesso básico ao banco</li>
+          <li>Sem simulados</li>
+          <li>Sem trilhas por edital</li>
+        </ul>
+        <button class="btn" style="margin-top:16px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.5); font-size:13px; padding:14px;" onclick="goTo(16)">
+          Começar grátis
+        </button>
+      </div>
+
+      <!-- Plano Premium (featured) -->
+      <div class="plan-card featured fade-up-3" style="margin-bottom:20px;">
+        <div class="plan-badge">MAIS POPULAR</div>
+        <div class="plan-name" style="color:var(--orange);">QConcursos Premium</div>
+        <div>
+          <span style="font-size:12px; color:var(--gray); text-decoration:line-through;">De R$59,90</span>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:4px;">
+          <span style="font-size:16px; font-weight:700; padding-top:6px; color:var(--white);">R$</span>
+          <span style="font-size:52px; font-weight:900; color:var(--white); letter-spacing:-2px; line-height:1;">29</span>
+          <span style="font-size:20px; font-weight:700; align-self:flex-end; padding-bottom:4px; color:var(--white);">,90</span>
+        </div>
+        <div style="font-size:13px; color:var(--gray); margin-top:2px;">ou 12x de R$2,99 • Cancele quando quiser</div>
+        <div style="display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:#ef4444; font-size:11px; font-weight:700; padding:4px 10px; border-radius:99px; margin-top:8px;">
+          🔥 50% DE DESCONTO — OFERTA LIMITADA
+        </div>
+        <ul class="plan-features" style="margin-top:14px;">
+          <li>Questões ILIMITADAS por dia</li>
+          <li>+8M questões comentadas</li>
+          <li>Trilhas completas por edital</li>
+          <li>Simulados cronometrados</li>
+          <li>Revisão inteligente com IA</li>
+          <li>Estatísticas detalhadas</li>
+          <li>Cronograma personalizado</li>
+          <li>Suporte prioritário</li>
+        </ul>
+        <button class="btn btn-orange" style="margin-top:20px;" onclick="goTo(16)">
+          🚀 ASSINAR PREMIUM AGORA
+        </button>
+      </div>
+
+      <!-- Trust -->
+      <div class="fade-up-4" style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:16px;">
+        <span style="font-size:11px; color:var(--gray);">🔒 Pagamento seguro</span>
+        <span style="font-size:11px; color:var(--gray);">↩️ 7 dias de garantia</span>
+        <span style="font-size:11px; color:var(--gray);">❌ Cancele online</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  TELA 16 — CHECKOUT / CONFIRMAÇÃO
+═══════════════════════════════════════ -->
+<section id="screen-16" class="screen">
+  <div class="screen-inner">
+    <div class="screen-content">
+      <!-- Testimonials (prova social antes do checkout) -->
+      <div class="fade-up-1" style="margin-bottom:20px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+          <h3 class="headline-md">Veja Quem Já Passou</h3>
+          <div style="display:flex; gap:3px;">
+            <span style="color:#f59e0b;">★</span><span style="color:#f59e0b;">★</span><span style="color:#f59e0b;">★</span><span style="color:#f59e0b;">★</span><span style="color:#f59e0b;">★</span>
+          </div>
+        </div>
+        <p style="font-size:12px; color:var(--gray); margin-bottom:14px;">⚠️ Depoimentos reais de aprovados.</p>
+
+        <!-- Testimonial carousel -->
+        <div style="display:flex; flex-direction:column; gap:12px;" id="testimonials">
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">AC</div>
+              <div>
+                <div class="testimonial-name">Ana Clara Santos <span class="verified-badge">✓</span></div>
+                <div class="testimonial-handle">@anaclarasantos • PRF 2024</div>
+              </div>
+            </div>
+            <div class="testimonial-text">
+              "Estudei 4 meses com as trilhas do QConcursos. Segui o cronograma certinho e fiz todos os simulados. Resultado: <strong>2º lugar entre 2.400 candidatos</strong>. A diferença foi o método."
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">RM</div>
+              <div>
+                <div class="testimonial-name">Rafael Mendes <span class="verified-badge">✓</span></div>
+                <div class="testimonial-handle">@rafaelmendes • TRT-SP 2024</div>
+              </div>
+            </div>
+            <div class="testimonial-text">
+              "Rodei 3 vezes sem método. No 4º concurso usei o QConcursos do jeito certo: trilha por edital + simulados todo fim de semana. <strong>Aprovado em 5º lugar.</strong> Nunca mais improviso."
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">JL</div>
+              <div>
+                <div class="testimonial-name">Juliana Lima <span class="verified-badge">✓</span></div>
+                <div class="testimonial-handle">@julianalima • INSS 2024</div>
+              </div>
+            </div>
+            <div class="testimonial-text">
+              "2 filhos, trabalho full time, estudava 2h por dia. Com as revisões inteligentes do Q, consegui reter muito mais. <strong>Aprovada em 8º lugar</strong>. Não é tempo — é método."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social proof number -->
+      <div class="fade-up-2" style="text-align:center; margin-bottom:20px; padding:16px; background:rgba(39,184,77,0.06); border:1px solid rgba(39,184,77,0.2); border-radius:var(--radius);">
+        <div style="font-size:32px; font-weight:900; color:var(--green);">+2M</div>
+        <div style="font-size:13px; color:rgba(255,255,255,0.6);">aprovados nos últimos 10 anos usando o QConcursos</div>
+      </div>
+
+      <!-- Oferta resumo -->
+      <div class="card fade-up-3" style="margin-bottom:20px; border-color:rgba(254,99,19,0.3);">
+        <div style="text-align:center;">
+          <div style="font-size:12px; color:var(--gray); margin-bottom:4px;">🎯 Você está levando:</div>
+          <h3 style="font-size:16px; font-weight:800; color:var(--white); margin-bottom:12px;">QConcursos Premium</h3>
+          <div class="price-block" style="padding:12px 0;">
+            <div class="price-old">De R$59,90/mês</div>
+            <div class="price-main">
+              <span class="price-rs">R$</span>
+              <span class="price-num">29</span>
+              <span class="price-cents">,90</span>
+            </div>
+            <div class="price-installment">ou 12x de R$2,99 no cartão</div>
+            <div class="price-discount">🔥 50% DE DESCONTO — OFERTA LIMITADA</div>
+          </div>
+
+          <!-- Timer -->
+          <div style="margin-top:12px;">
+            <div class="timer-label" style="margin-bottom:6px;">OFERTA EXPIRA EM:</div>
+            <div class="timer-display" id="checkout-timer">14:59</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Final -->
+      <div class="fade-up-4" style="margin-bottom:16px;">
+        <button class="btn btn-primary" style="font-size:16px; padding:20px;" onclick="showSuccess()">
+          🏆 GARANTIR PREMIUM POR R$29,90
+        </button>
+      </div>
+
+      <div class="fade-up-4" style="text-align:center; margin-bottom:16px;">
+        <p style="font-size:11px; color:var(--gray); line-height:1.7;">
+          🔒 Compra 100% segura · SSL · Seu primeiro mês começa hoje<br>
+          ↩️ Garantia de 7 dias — se não gostar, devolvemos tudo<br>
+          ❌ Cancele quando quiser, sem burocracia
+        </p>
+      </div>
+
+      <!-- Sticky CTA -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+  MODAL SUCESSO
+═══════════════════════════════════════ -->
+<div id="success-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999; display:none; align-items:center; justify-content:center; padding:24px;">
+  <div style="background:var(--dark-card); border:1px solid rgba(39,184,77,0.3); border-radius:20px; padding:32px 24px; max-width:360px; width:100%; text-align:center;">
+    <div style="font-size:48px; margin-bottom:16px;">🎉</div>
+    <h2 style="font-size:22px; font-weight:900; color:var(--green); margin-bottom:8px;">Parabéns!</h2>
+    <p style="font-size:15px; color:rgba(255,255,255,0.8); line-height:1.6; margin-bottom:20px;">
+      Sua assinatura QConcursos Premium está ativa. Sua jornada de aprovação começa agora!
+    </p>
+    <div style="background:rgba(39,184,77,0.08); border:1px solid rgba(39,184,77,0.2); border-radius:12px; padding:16px; margin-bottom:20px;">
+      <div style="font-size:13px; color:var(--gray); margin-bottom:4px;">Próximo passo:</div>
+      <div style="font-size:15px; font-weight:700; color:var(--white);">Acesse a trilha do seu concurso e comece hoje mesmo 🚀</div>
+    </div>
+    <button class="btn btn-primary" onclick="document.getElementById('success-modal').style.display='none'; goTo(1)">
+      IR PARA O QConcursos →
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ═══ State ═══
+  var answers = {};
+  var timerInterval = null;
+  var offerSeconds = 14 * 60 + 59;
+
+  // ═══ Navigation ═══
+  window.goTo = function(num) {
+    document.querySelectorAll('.screen').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    var target = document.getElementById('screen-' + num);
+    if (target) {
+      target.classList.add('active');
+      target.scrollTop = 0;
+      // Run screen-specific logic
+      if (num === 9)  startProcessing();
+      if (num === 15) startOfferTimer();
+      if (num === 16) startCheckoutTimer();
+    }
+  };
+
+  // ═══ Quiz option selection ═══
+  window.selectOption = function(btn, question, value, nextScreen) {
+    answers[question] = value;
+    // Clear siblings
+    btn.closest('.option-list').querySelectorAll('.option-btn').forEach(function(b) {
+      b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
+
+    // Show feedback
+    showFeedback(question, value);
+
+    // Enable continue button
+    var continueBtn = document.getElementById(question + '-btn');
+    if (continueBtn) {
+      continueBtn.style.opacity = '1';
+      continueBtn.style.pointerEvents = 'auto';
+      continueBtn.disabled = false;
+    }
+  };
+
+  function showFeedback(q, val) {
+    var feedbacks = {
+      q1: {
+        menos2h: { title: 'Atenção ao Volume', text: 'Menos de 2h por dia pode funcionar SE aplicado com método. Sem estratégia, esse tempo rende quase zero.' },
+        '2a4h': { title: 'Bom Ponto de Partida', text: '2 a 4h por dia com método estruturado é suficiente para a maioria dos concursos. Qualidade > quantidade.' },
+        '4a6h': { title: 'Volume Acima da Média', text: 'Excelente dedicação! Agora o segredo é direcionar esse tempo para o que realmente cai na prova.' },
+        mais6h: { title: 'Cuidado com o Burnout', text: 'Mais de 6h sem método pode ser contraproducente. O segredo é estudar certo, não mais.' }
+      },
+      q2: {
+        sem: { title: '🚨 Crítico: Estudando no Escuro', text: 'Sem organização definida você está literalmente apostando na sorte. É como entrar numa prova sem saber o que cai.' },
+        basico: { title: 'Base Fraca', text: 'Um cronograma básico é melhor que nada, mas sem uma trilha por edital você desperdiça até 40% do tempo.' },
+        internet: { title: 'Risco Alto', text: 'Cronogramas genéricos da internet não consideram seu edital específico. Você pode estar estudando matérias que nem caem.' },
+        estruturado: { title: '✅ Caminho Certo!', text: 'Trilha estruturada por edital é o padrão dos aprovados. Continue assim e some questões comentadas.' }
+      },
+      q3: {
+        nenhum: { text: 'Começar com o método certo desde o início pode economizar ANOS de tentativa e erro. Você tem uma vantagem que muitos não tiveram.' },
+        '1a3': { text: 'Você já tem experiência. Com as ferramentas certas, sua próxima tentativa pode ser a definitiva.' },
+        '4a7': { text: 'Você conhece o campo de batalha. O que faltou até agora foi o método. Está na hora de mudar a abordagem.' },
+        mais7: { text: 'Sua persistência é admirável. Mas insistir no mesmo método que não funcionou é o que separa os que passam dos que ficam tentando.' }
+      }
+    };
+
+    var data = feedbacks[q] && feedbacks[q][val];
+    if (!data) return;
+
+    var feedbackEl = document.getElementById(q + '-feedback');
+    if (!feedbackEl) return;
+
+    if (q === 'q3') {
+      document.getElementById('q3-feedback-text').textContent = data.text;
+    } else {
+      document.getElementById(q + '-feedback-title').textContent = data.title;
+      document.getElementById(q + '-feedback-text').textContent = data.text;
+    }
+
+    feedbackEl.style.display = 'flex';
+    feedbackEl.style.animation = 'fadeUp 0.3s ease';
+  }
+
+  // ═══ Processing animation ═══
+  function startProcessing() {
+    var pct = 0;
+    var bar = document.getElementById('proc-bar');
+    var pctEl = document.getElementById('proc-pct');
+    var items = ['ai1','ai2','ai3','ai4','ai5'];
+    var btn = document.getElementById('ver-diagnostico-btn');
+
+    // Reset
+    items.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.style.opacity = '0.3';
+        var icon = el.querySelector('.check-icon');
+        if (icon) icon.style.background = 'rgba(255,255,255,0.1)';
+      }
+    });
+    if (bar) bar.style.width = '0%';
+    if (pctEl) pctEl.textContent = '0%';
+    if (btn) { btn.style.opacity = '0.3'; btn.style.pointerEvents = 'none'; btn.disabled = true; }
+
+    // Set candidate name
+    var nameEl = document.getElementById('candidato-nome');
+    if (nameEl) nameEl.textContent = 'CANDIDATO(A) APROVADO(A)';
+
+    var step = 0;
+    var interval = setInterval(function() {
+      pct += Math.random() * 22 + 8;
+      if (pct > 100) pct = 100;
+
+      if (bar) bar.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = Math.floor(pct) + '%';
+
+      // Activate analysis items progressively
+      var itemIndex = Math.floor(pct / 20);
+      for (var i = 0; i <= itemIndex && i < items.length; i++) {
+        var el = document.getElementById(items[i]);
+        if (el) {
+          el.style.opacity = '1';
+          el.style.transition = 'opacity 0.4s ease';
+          var icon = el.querySelector('.check-icon');
+          if (icon) {
+            icon.style.background = 'var(--green)';
+            icon.style.transition = 'background 0.3s ease';
+          }
+        }
+      }
+
+      if (pct >= 100) {
+        clearInterval(interval);
+        if (btn) {
+          setTimeout(function() {
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+            btn.disabled = false;
+          }, 600);
+        }
+      }
+    }, 600);
+  }
+
+  // ═══ Offer timer ═══
+  function startOfferTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    var secs = offerSeconds;
+    var el = document.getElementById('offer-timer');
+    var el2 = document.getElementById('checkout-timer');
+
+    function update() {
+      var m = Math.floor(secs / 60);
+      var s = secs % 60;
+      var str = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      if (el) el.textContent = str;
+      if (el2) el2.textContent = str;
+      if (secs > 0) secs--;
+    }
+
+    update();
+    timerInterval = setInterval(update, 1000);
+  }
+
+  function startCheckoutTimer() {
+    // Just ensure timer is running
+    if (!timerInterval) startOfferTimer();
+  }
+
+  // ═══ Show success ═══
+  window.showSuccess = function() {
+    var modal = document.getElementById('success-modal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  };
+
+  // ═══ Initial setup ═══
+  document.addEventListener('DOMContentLoaded', function() {
+    // Ensure screen 1 is active
+    goTo(1);
+  });
+
+})();
+</script>
+</body>
+</html>
