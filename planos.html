@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planos QConcursos</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+  .section { padding: 48px 20px; max-width: 860px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 32px; }
+  .section-header h2 { font-size: 26px; font-weight: 600; margin-bottom: 8px; }
+  .section-header p { font-size: 14px; color: #555; }
+  .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .plan-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1.5px solid #ddd; }
+  .plan-card.featured { border: 2.5px solid #1b8a3e; }
+  .header-bar { padding: 8px 12px; font-size: 11px; font-weight: 700; text-align: center; letter-spacing: .08em; }
+  .header-bar.green { background: #1b8a3e; color: #fff; }
+  .header-bar.orange { background: #e06b00; color: #fff; }
+  .plan-name { padding: 12px; text-align: center; font-size: 15px; font-weight: 600; background: #111; color: #fff; }
+  .plan-body { padding: 18px; }
+  .price-from { font-size: 11px; color: #999; text-align: center; text-decoration: line-through; margin-bottom: 2px; }
+  .price-main { text-align: center; font-size: 12px; color: #555; margin-bottom: 14px; }
+  .price-main strong { font-size: 22px; font-weight: 700; color: #111; display: block; line-height: 1.2; margin-top: 2px; }
+  .cta-btn { display: block; width: 100%; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; color: #fff; margin-bottom: 8px; transition: opacity .15s; }
+  .cta-btn:hover { opacity: .88; }
+  .cta-btn.green { background: #1b8a3e; }
+  .cta-btn.orange { background: #e06b00; }
+  .guarantee { font-size: 11px; color: #777; text-align: center; margin-bottom: 14px; }
+  .mentor-badge { background: #fff8e6; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #7a4a00; margin-bottom: 12px; line-height: 1.5; }
+  .feat-title { font-size: 10px; font-weight: 700; background: #f0f0f0; color: #555; text-align: center; padding: 5px 8px; border-radius: 6px; margin: 10px 0 7px; letter-spacing: .05em; }
+  .feat { font-size: 12px; display: flex; gap: 7px; margin-bottom: 5px; line-height: 1.45; color: #222; }
+  .feat .icon { flex-shrink: 0; margin-top: 1px; }
+  .feat .icon.g { color: #1b8a3e; font-size: 14px; }
+  .feat .icon.o { color: #e06b00; font-size: 14px; }
+  @media (max-width: 580px) {
+    .plan-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="section">
+  <div class="section-header">
+    <h2>Escolha o plano ideal para você</h2>
+    <p>Planos para todos os concursos: IBGE, Receita Federal, SUS e muito mais</p>
+  </div>
+  <div class="plan-grid">
+
+    <!-- AVANÇADO -->
+    <div class="plan-card featured">
+      <div class="header-bar green">MELHOR CUSTO BENEFÍCIO</div>
+      <div class="plan-name">🏷 Ilimitado Avançado</div>
+      <div class="plan-body">
+        <p class="price-from">De R$ 359,40</p>
+        <div class="price-main">a partir de<strong>R$ 22,90/mês</strong></div>
+        <a class="cta-btn green" href="periodicidade.html?plano=avancado">Assinar agora</a>
+        <p class="guarantee">✅ 7 dias de garantia</p>
+
+        <div class="feat-title">O QUE VOCÊ FAZ:</div>
+        <div class="feat"><span class="icon g">✓</span>Estudar com cursos digitais completos e atualizados, ministrados por professores aprovados em +100 concursos</div>
+        <div class="feat"><span class="icon g">✓</span>Revisar com mapas mentais e simulados</div>
+        <div class="feat"><span class="icon g">✓</span>Comparar seu desempenho com concorrentes</div>
+
+        <div class="feat-title">O QUE VOCÊ RECEBE:</div>
+        <div class="feat"><span class="icon g">✓</span>Tudo do Ilimitado Básico</div>
+        <div class="feat"><span class="icon g">✓</span>Cursos completos em apostila digital</div>
+        <div class="feat"><span class="icon g">✓</span>Mais de 2 mil mapas mentais para revisão</div>
+        <div class="feat"><span class="icon g">✓</span>Vade Mecum digital sempre à mão</div>
+        <div class="feat"><span class="icon g">✓</span>Relatórios da concorrência e recomendações personalizadas para estudar melhor que os outros</div>
+        <div class="feat"><span class="icon g">✓</span>Simulados semanais sob medida para você chegar confiante na prova</div>
+
+        <div class="feat-title">O QUE VOCÊ CONQUISTA:</div>
+        <div class="feat"><span class="icon g">✓</span>Clareza no plano de estudos</div>
+        <div class="feat"><span class="icon g">✓</span>Vantagem real sobre a concorrência</div>
+        <div class="feat"><span class="icon g">✓</span>Progresso visível a cada semana</div>
+      </div>
+    </div>
+
+    <!-- ELITE -->
+    <div class="plan-card">
+      <div class="header-bar orange">MAIS COMPLETO</div>
+      <div class="plan-name">🏷 Ilimitado Elite</div>
+      <div class="plan-body">
+        <p class="price-from">De R$ 599,40</p>
+        <div class="price-main">a partir de<strong>R$ 34,90/mês</strong></div>
+        <a class="cta-btn orange" href="periodicidade.html?plano=elite">Assinar agora</a>
+        <p class="guarantee">✅ 7 dias de garantia</p>
+        <div class="mentor-badge">⭐ Ganhe 1 papo com <strong>mentor especialista</strong> toda semana</div>
+
+        <div class="feat-title">O QUE VOCÊ FAZ:</div>
+        <div class="feat"><span class="icon o">✓</span>Participar de mentoria coletiva e grupo de estudo</div>
+        <div class="feat"><span class="icon o">✓</span>Treinar redação e fazer provas simuladas</div>
+        <div class="feat"><span class="icon o">✓</span>Foco e disciplina com apoio de um psicólogo</div>
+
+        <div class="feat-title">O QUE VOCÊ RECEBE:</div>
+        <div class="feat"><span class="icon o">✓</span>Tudo do Ilimitado Avançado</div>
+        <div class="feat"><span class="icon o">✓</span>Mentoria em grupo exclusivo no WhatsApp com especialista para definir o que estudar e a ordem das matérias</div>
+        <div class="feat"><span class="icon o">✓</span>Sessões com psicólogo especializado em preparação para concursos</div>
+        <div class="feat"><span class="icon o">✓</span>Ranking exclusivo para acompanhar sua posição real em relação a concorrentes</div>
+        <div class="feat"><span class="icon o">✓</span>Cronogramas semanais e trilhas de estudo prontas para guiar sua preparação</div>
+
+        <div class="feat-title">O QUE VOCÊ CONQUISTA:</div>
+        <div class="feat"><span class="icon o">✓</span>Clareza sobre o que estudar, quais matérias priorizar e em que ordem</div>
+        <div class="feat"><span class="icon o">✓</span>Desenvolvimento de disciplina e método</div>
+        <div class="feat"><span class="icon o">✓</span>Redação e provas simuladas dominadas</div>
+        <div class="feat"><span class="icon o">✓</span>Evolução monitorada e comparável com outros alunos</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

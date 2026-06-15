@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escolha o período — QConcursos</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #1a1a1a; }
+  .page { max-width: 500px; margin: 0 auto; padding: 40px 20px 60px; }
+  .back-link { font-size: 13px; color: #555; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 28px; }
+  .back-link:hover { color: #1a1a1a; }
+  .header { text-align: center; margin-bottom: 24px; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 13px; color: #555; margin-bottom: 12px; }
+  .selected-badge { display: inline-flex; align-items: center; gap: 6px; background: #111; color: #fff; border-radius: 8px; padding: 5px 14px; font-size: 12px; font-weight: 600; }
+  .toggle-wrap { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  .toggle-btn { padding: 6px 18px; font-size: 12px; font-weight: 600; border-radius: 99px; border: 1.5px solid #ccc; background: #fff; color: #555; cursor: pointer; transition: all .15s; }
+  .toggle-btn.active { background: #111; color: #fff; border-color: #111; }
+  .period-list { display: flex; flex-direction: column; gap: 10px; }
+  .period-card { background: #fff; border-radius: 12px; border: 1.5px solid #e0e0e0; padding: 16px; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: inherit; transition: border-color .15s, box-shadow .15s; }
+  .period-card:hover { border-color: #1b8a3e; box-shadow: 0 2px 8px rgba(27,138,62,.12); }
+  .period-card.top-pick { border: 2.5px solid #1b8a3e; }
+  .top-badge { position: absolute; top: -10px; right: 14px; background: #1b8a3e; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 99px; letter-spacing: .04em; }
+  .period-info { flex: 1; }
+  .period-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .period-sub { font-size: 11px; color: #777; margin-bottom: 5px; }
+  .saving-chip { display: inline-block; font-size: 10px; font-weight: 600; background: #e8f5e9; color: #1b6b30; border-radius: 99px; padding: 2px 9px; }
+  .period-price { text-align: right; flex-shrink: 0; }
+  .price-main { font-size: 17px; font-weight: 700; color: #111; }
+  .price-main span { font-size: 12px; font-weight: 400; color: #555; }
+  .price-detail { font-size: 11px; color: #777; margin-top: 2px; }
+  .price-strike { font-size: 11px; color: #aaa; text-decoration: line-through; margin-top: 1px; }
+  .arrow { font-size: 18px; color: #bbb; margin-left: 4px; flex-shrink: 0; }
+  .period-card:hover .arrow { color: #1b8a3e; }
+  .guarantee { text-align: center; font-size: 12px; color: #777; margin-top: 20px; }
+
+  /* Hidden sections por plano */
+  .plano-avancado, .plano-elite { display: none; }
+  .plano-avancado.ativo, .plano-elite.ativo { display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back-link" href="planos.html">← Voltar para planos</a>
+
+  <div class="header">
+    <h1>Escolha o período</h1>
+    <p>Você selecionou o plano:</p>
+    <span class="selected-badge" id="badge-nome">🏷 Ilimitado Avançado</span>
+  </div>
+
+  <div class="toggle-wrap">
+    <button class="toggle-btn active" onclick="mudarPlano('avancado', this)">Avançado</button>
+    <button class="toggle-btn" onclick="mudarPlano('elite', this)">Elite</button>
+  </div>
+
+  <!-- AVANÇADO -->
+  <div class="period-list plano-avancado ativo" id="lista-avancado">
+
+    <a class="period-card top-pick" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48462">
+      <span class="top-badge">mais econômico</span>
+      <div class="period-info">
+        <div class="period-name">Anual</div>
+        <div class="period-sub">12 meses de acesso</div>
+        <span class="saving-chip">Economize R$ 331,08</span>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 35,90<span>/mês</span></div>
+        <div class="price-detail">ou R$ 387,72 à vista</div>
+        <div class="price-strike">De R$ 718,80</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="period-card" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48461">
+      <div class="period-info">
+        <div class="period-name">Semestral</div>
+        <div class="period-sub">6 meses de acesso</div>
+        <span class="saving-chip">Economize R$ 112,08</span>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 22,90<span>/mês</span></div>
+        <div class="price-detail">ou R$ 247,32 à vista</div>
+        <div class="price-strike">De R$ 359,40</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="period-card" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=10147">
+      <div class="period-info">
+        <div class="period-name">Mensal</div>
+        <div class="period-sub">Renova todo mês</div>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 59,90<span>/mês</span></div>
+        <div class="price-detail">cobrado mensalmente</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="period-card" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=14447">
+      <div class="period-info">
+        <div class="period-name">Vitalício</div>
+        <div class="period-sub">Acesso para sempre</div>
+        <span class="saving-chip">Economize R$ 1.185,48</span>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 89,90<span>/mês</span></div>
+        <div class="price-detail">ou R$ 970,92 à vista</div>
+        <div class="price-strike">De R$ 2.156,40</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- ELITE -->
+  <div class="period-list plano-elite" id="lista-elite">
+
+    <a class="period-card top-pick" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48827">
+      <span class="top-badge">mais econômico</span>
+      <div class="period-info">
+        <div class="period-name">Anual</div>
+        <div class="period-sub">12 meses de acesso</div>
+        <span class="saving-chip">Economize R$ 551,88</span>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 59,90<span>/mês</span></div>
+        <div class="price-detail">ou R$ 646,92 à vista</div>
+        <div class="price-strike">De R$ 1.198,80</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="period-card" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48463">
+      <div class="period-info">
+        <div class="period-name">Semestral</div>
+        <div class="period-sub">6 meses de acesso</div>
+        <span class="saving-chip">Economize R$ 222,48</span>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 34,90<span>/mês</span></div>
+        <div class="price-detail">ou R$ 376,92 à vista</div>
+        <div class="price-strike">De R$ 599,40</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="period-card" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=10148">
+      <div class="period-info">
+        <div class="period-name">Mensal</div>
+        <div class="period-sub">Renova todo mês</div>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 99,90<span>/mês</span></div>
+        <div class="price-detail">cobrado mensalmente</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="period-card" href="https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48666">
+      <div class="period-info">
+        <div class="period-name">Vitalício</div>
+        <div class="period-sub">Acesso para sempre</div>
+        <span class="saving-chip">Economize R$ 2.085,48</span>
+      </div>
+      <div class="period-price">
+        <div class="price-main">R$ 139,90<span>/mês</span></div>
+        <div class="price-detail">ou R$ 1.510,92 à vista</div>
+        <div class="price-strike">De R$ 3.596,40</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+  </div>
+
+  <p class="guarantee">✅ 7 dias de garantia — cancele quando quiser</p>
+</div>
+
+<script>
+  const links = {
+    avancado: {
+      anual:     'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48462',
+      semestral: 'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48461',
+      mensal:    'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=10147',
+      vitalicio: 'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=14447'
+    },
+    elite: {
+      anual:     'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48827',
+      semestral: 'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48463',
+      mensal:    'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=10148',
+      vitalicio: 'https://www.qconcursos.com/v2/checkout?from=%2Fplanos-de-assinatura&offer_ids%5B%5D=48666'
+    }
+  };
+
+  function mudarPlano(plano, btn) {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.plano-avancado, .plano-elite').forEach(el => el.classList.remove('ativo'));
+    document.getElementById('lista-' + plano).classList.add('ativo');
+    document.getElementById('badge-nome').textContent = plano === 'avancado' ? '🏷 Ilimitado Avançado' : '🏷 Ilimitado Elite';
+  }
+
+  // Lê o parâmetro ?plano=elite da URL ao carregar
+  const params = new URLSearchParams(window.location.search);
+  const planoParam = params.get('plano');
+  if (planoParam === 'elite') {
+    const btn = document.querySelectorAll('.toggle-btn')[1];
+    mudarPlano('elite', btn);
+  }
+</script>
+</body>
+</html>
