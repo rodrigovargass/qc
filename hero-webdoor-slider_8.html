@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Webdoor Slider</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #f2f2f2; }
+
+  .hero-slider {
+    position: relative;
+    width: 100%;
+    height: 550px;
+    overflow: hidden;
+  }
+
+  .slider-track {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    transform: translateX(0%);
+    transition: transform 0.6s ease-in-out;
+  }
+
+  .slide {
+    position: relative;
+    width: 33.3333%;
+    height: 100%;
+    background-color: #FE6112;
+  }
+
+  .slide-container {
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 4%;
+  }
+
+  .slide-image {
+    width: 50%;
+    height: 100%;
+    background-image: url('https://imagedelivery.net/ZwI98Xzesy9y5C72ogEH0A/8352f759-6442-4149-fe86-28b5b44f5600/width=1144,height=1060,quality=85,fit=cover');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .slide-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.05;
+    font-style: italic;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .slide-paragraph {
+    font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+    line-height: 1.5;
+    font-weight: 400;
+    color: rgb(255 249 247 / 1);
+    margin-bottom: 2rem;
+  }
+
+  .slide-button {
+    display: inline-block;
+    background-color: #1EB051;
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    padding: 1.1rem 2.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: fit-content;
+    transition: background-color 0.2s ease;
+  }
+
+  .slide-button:hover {
+    background-color: #189041;
+  }
+
+  .slider-dots {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 3;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .dot.active {
+    background: #FFFFFF;
+    transform: scale(1.2);
+  }
+
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.35);
+    border: none;
+    color: #FFFFFF;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+  }
+
+  .slider-arrow:hover { background: rgba(0,0,0,0.55); }
+  .slider-arrow.prev { left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  .slider-arrow.next { right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+  @media (max-width: 1024px) {
+    .hero-slider { height: 400px; }
+    .slide-content { padding: 0 3%; }
+  }
+
+  @media (max-width: 768px) {
+    .hero-slider { height: 620px; }
+    .slide-container { flex-direction: column; }
+    .slide-content { width: 100%; flex: 0 0 auto; padding: 1rem 6% 0.5rem; justify-content: flex-start; }
+    .slide-image { width: 100%; flex: 1; background-size: 80%; }
+    .slide-title { margin-bottom: 0.6rem; }
+    .slide-paragraph { margin-bottom: 1rem; }
+    .slider-arrow { width: 40px; height: 40px; font-size: 1.4rem; top: 50%; transform: translateY(-50%); }
+    .dot { width: 14px; height: 14px; }
+    .slider-dots { bottom: 16px; }
+  }
+
+  @media (max-width: 420px) {
+    .hero-slider { height: 560px; }
+    .slide-button { padding: 0.65rem 1.5rem; font-size: 0.9rem; }
+    .slide-image { background-size: 88%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero-slider" id="heroSlider">
+
+  <div class="slider-track" id="sliderTrack">
+
+    <div class="slide">
+      <div class="slide-container">
+        <div class="slide-content">
+          <h1 class="slide-title">Sua aprovação começa aqui</h1>
+          <p class="slide-paragraph">Milhares de questões comentadas e planos de estudo feitos para o seu concurso.</p>
+          <a href="#" class="slide-button">Comece agora</a>
+        </div>
+        <div class="slide-image"></div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="slide-container">
+        <div class="slide-content">
+          <h1 class="slide-title">Estude com quem mais aprova</h1>
+          <p class="slide-paragraph">Milhares de questões comentadas e planos de estudo feitos para o seu concurso.</p>
+          <a href="#" class="slide-button">Comece agora</a>
+        </div>
+        <div class="slide-image"></div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="slide-container">
+        <div class="slide-content">
+          <h1 class="slide-title">Grátis por 7 dias, teste agora</h1>
+          <p class="slide-paragraph">Milhares de questões comentadas e planos de estudo feitos para o seu concurso.</p>
+          <a href="#" class="slide-button">Comece agora</a>
+        </div>
+        <div class="slide-image"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="slider-arrow prev" onclick="changeSlide(-1)" aria-label="Slide anterior">&#8249;</button>
+  <button class="slider-arrow next" onclick="changeSlide(1)" aria-label="Próximo slide">&#8250;</button>
+
+  <div class="slider-dots">
+    <button class="dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+    <button class="dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+    <button class="dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+  </div>
+
+</div>
+
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('sliderTrack');
+  const totalSlides = document.querySelectorAll('.slide').length;
+  const dots = document.querySelectorAll('.dot');
+  let autoplayInterval;
+
+  function showSlide(index) {
+    currentSlide = (index + totalSlides) % totalSlides;
+    track.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
+    dots.forEach(d => d.classList.remove('active'));
+    dots[currentSlide].classList.add('active');
+  }
+
+  function changeSlide(direction) {
+    showSlide(currentSlide + direction);
+    resetAutoplay();
+  }
+
+  function goToSlide(index) {
+    showSlide(index);
+    resetAutoplay();
+  }
+
+  function startAutoplay() {
+    autoplayInterval = setInterval(() => {
+      changeSlide(1);
+    }, 5000);
+  }
+
+  function resetAutoplay() {
+    clearInterval(autoplayInterval);
+    startAutoplay();
+  }
+
+  startAutoplay();
+
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragCurrentX = 0;
+  let baseTranslate = 0;
+
+  function getTranslatePercent() {
+    return -(currentSlide * (100 / totalSlides));
+  }
+
+  function dragStart(x) {
+    isDragging = true;
+    dragStartX = x;
+    dragCurrentX = x;
+    baseTranslate = getTranslatePercent();
+    track.style.transition = 'none';
+    clearInterval(autoplayInterval);
+  }
+
+  function dragMove(x) {
+    if (!isDragging) return;
+    dragCurrentX = x;
+    const deltaPx = dragCurrentX - dragStartX;
+    const deltaPercent = (deltaPx / track.offsetWidth) * 100;
+    track.style.transform = `translateX(${baseTranslate + deltaPercent}%)`;
+  }
+
+  function dragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = 'transform 0.6s ease-in-out';
+    const deltaPx = dragCurrentX - dragStartX;
+    if (Math.abs(deltaPx) > 50) {
+      showSlide(currentSlide + (deltaPx < 0 ? 1 : -1));
+    } else {
+      showSlide(currentSlide);
+    }
+    resetAutoplay();
+  }
+
+  track.addEventListener('touchstart', (e) => dragStart(e.touches[0].clientX), { passive: true });
+  track.addEventListener('touchmove', (e) => dragMove(e.touches[0].clientX), { passive: true });
+  track.addEventListener('touchend', dragEnd);
+
+  track.addEventListener('mousedown', (e) => { dragStart(e.clientX); e.preventDefault(); });
+  window.addEventListener('mousemove', (e) => dragMove(e.clientX));
+  window.addEventListener('mouseup', dragEnd);
+</script>
+
+</body>
+</html>
